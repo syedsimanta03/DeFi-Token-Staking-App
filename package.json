@@ -1,8 +1,8 @@
 {
-  "name": "defi-tutorial",
+  "name": "defi",
   "version": "0.1.0",
   "description": "DeFi Token Staking App",
-  "author": "c-money",
+  "author": "sam",
   "dependencies": {
     "@types/jest": "^26.0.24",
     "@types/node": "^16.3.1",

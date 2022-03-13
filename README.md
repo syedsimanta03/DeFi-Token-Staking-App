@@ -13,3 +13,4 @@ to run Moch and Chai testing suite
 Go into the App.js folder and replace the current inactive
 API key with your API key.
 
+solidity dapps smart contract tokens difi yeld farming staking
