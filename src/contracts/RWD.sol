@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.0;
 
-contract Tether {
-    string public name = "Tether Token";
-    string public symbol = "USDT";
+contract RWD {
+    string public name = "Reward Token";
+    string public symbol = "RWD";
     uint256 public totalSupply = 1000000000000000000000000;
     uint8 public decimal = 18;
 
