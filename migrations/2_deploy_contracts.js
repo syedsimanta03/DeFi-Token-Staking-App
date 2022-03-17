@@ -17,5 +17,5 @@ module.exports = async function(deployer, network, accounts) {
 
   await rwd.transfer(decentralBank.address, "1000000000000000000000000"); //1M
   // eslint-disable-next-line
-  await tether.transfer(accounts[1], "10000000000000000");
+  await tether.transfer(accounts[1], "1000000000000000000");
 };
