@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Navbar = () => {
+const Navbar = ({ walletAddress }) => {
   return (
     <header className="xxl bg-img" style={{ backgroundImage: "url(header-bg4.jpg)" }}>
       <nav className="navbar navbar-expand-lg navbar-inverse absolute top-0 left-0 right-0 custom-menu split-menu">
@@ -28,7 +28,7 @@ const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbar-toggle-split-right">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
-                <p className="font-bold text-white">User: 0x124343246</p>
+                <p className="font-bold text-white">User:{walletAddress}</p>
               </li>
             </ul>
             {/* / navbar-nav */}
@@ -54,6 +54,6 @@ const Navbar = () => {
       {/* / container */}
     </header>
   );
-}
+};
 
 export default Navbar
