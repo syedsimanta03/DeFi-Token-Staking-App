@@ -28,7 +28,7 @@ const Navbar = ({ walletAddress }) => {
           <div className="collapse navbar-collapse" id="navbar-toggle-split-right">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
-                <p className="font-bold text-white">User:{walletAddress}</p>
+                <p className="font-bold text-white">User: {walletAddress}</p>
               </li>
             </ul>
             {/* / navbar-nav */}
