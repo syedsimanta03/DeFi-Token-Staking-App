@@ -28,7 +28,7 @@ const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbar-toggle-split-right">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
-                <p className="font-bold text-white">User: 0x12434324</p>
+                <p className="font-bold text-white">User: 0x124343246</p>
               </li>
             </ul>
             {/* / navbar-nav */}
