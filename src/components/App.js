@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { currentWallet } from "../hooks/currentWallet";
 import syncAccount from "../hooks/syncAccount";
 import Navbar from "./Navbar";
 
 const App = () => {
   syncAccount();
-  const address = currentWallet();
+  const address = currentWallet('account');
 
   return (
     <div>
