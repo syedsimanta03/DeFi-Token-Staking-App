@@ -13,3 +13,4 @@ export const currentWallet = (key, defaultValue) => {
   });
   return address;
 };
+
