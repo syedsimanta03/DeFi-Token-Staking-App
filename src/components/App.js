@@ -3,6 +3,8 @@ import Web3 from "web3";
 import syncAccount from "../hooks/syncAccount";
 import Navbar from "./Navbar";
 const Tether = require("../truffle_abis/Tether.json");
+const RWD = require("../truffle_abis/RWD.json");
+const DecentralBank = require("../truffle_abis/DecentralBank.json");
 
 // instantiate the class first
 let web3 = new Web3(Web3.givenProvider || "ws://localhost:7545");
@@ -21,17 +23,28 @@ const App = () => {
   });
 
   React.useEffect(() => {
-    getNetId();
-  }, [address]); // empty means run once, re-run getNetId() when address changes
+    loadBlockchain();
+  }, [address]); // if empty it means run getNetId() once, re-run getNetId() when address changes
 
-
-  const getNetId = async () => {
-    const chainLink = await web3.eth.net.getId().then(result => result);
-    const tetherData = Tether.networks[chainLink];
+  const loadBlockchain = async () => {
+    const tetherChainLink = await web3.eth.net.getId().then(result => result);
+    //Load Tether
+    const tetherData = Tether.networks[tetherChainLink];
     const tether = new web3.eth.Contract(Tether.abi, tetherData.address);
-    const balance = await web3.eth.getBalance(address);
-    console.log(address, chainLink, balance);
-    setContract({ ...contract, netId: chainLink, tether: tether, tetherBalance: balance });
+    const tetherBalance = await web3.eth.getBalance(address);
+    setContract({ ...contract, netId: tetherChainLink, tether: tether, tetherBalance: tetherBalance });
+    //Load RWD
+    const rwdChainLink = await web3.eth.net.getId().then(result => result);
+    const rwdData = RWD.networks[rwdChainLink];
+    const rwd = new web3.eth.Contract(RWD.abi, rwdData.address);
+    const rwdBalance = await web3.eth.getBalance(address);
+    setContract({ ...contract, netId: rwdChainLink, rwd: rwd, rwdBalance: rwdBalance });
+    //Load DecentralBank
+    const decentralBankChainLink = await web3.eth.net.getId().then(result => result);
+    const decentralBankData = DecentralBank.networks[decentralBankChainLink];
+    const decentralBank = new web3.eth.Contract(DecentralBank.abi, decentralBankData.address);
+    const decentralBankBalance = await web3.eth.getBalance(address);
+    setContract({ ...contract, loading: false, netId: decentralBankChainLink, decentralBank: decentralBank, stakingBalance: decentralBankBalance });
   };
 
   return (
