@@ -27,7 +27,7 @@ const [account, setaccount] = useLocalStorage("account", "0x0");
     window.ethereum.on("disconnect", clearAccount);
     window.ethereum.request({ method: "eth_requestAccounts" }).then(
       accounts => {
-        console.log("accounts", accounts[0]);
+        console.log("accounts[0]", accounts[0]);
         // No need to set account here, it will be set by the event listener
       },
       error => {
@@ -44,6 +44,7 @@ const [account, setaccount] = useLocalStorage("account", "0x0");
   }, [
     account // re-render when this state changes
   ]);
+  return account
 }
 
 export default syncAccount
