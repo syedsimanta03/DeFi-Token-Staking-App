@@ -2,15 +2,30 @@ import React, { useState } from "react";
 import Web3 from "web3";
 import syncAccount from "../hooks/syncAccount";
 import Navbar from "./Navbar";
+import Loader from './Loader';
+import Main from './Main';
 const Tether = require("../truffle_abis/Tether.json");
 const RWD = require("../truffle_abis/RWD.json");
 const DecentralBank = require("../truffle_abis/DecentralBank.json");
+export const UserContext = React.createContext();
 
-// instantiate the class first
-let web3 = new Web3(Web3.givenProvider || "ws://localhost:7545");
+// instantiate the web3 first
+  const loadWeb3 = async () => {
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+      await window.ethereum.enable();
+    } else if (window.web3) {
+      window.web3 = new Web3(window.web3.currentProvider);
+    } else {
+      window.alert("Non-ether");
+    }
+  };
+
+
 
 const App = () => {
   const address = syncAccount();
+  const networkID = window.ethereum.networkVersion;
   const [contract, setContract] = useState({
     netId: 0,
     tether: {},
@@ -23,12 +38,19 @@ const App = () => {
   });
 
   React.useEffect(() => {
+  loadWeb3()
     loadBlockchain();
-  }, [address]); // if empty it means run getNetId() once, re-run getNetId() when address changes
+  }, [networkID, address]); // if empty it means run getNetId() once, re-run getNetId() when something changes inside[]
 
   const loadBlockchain = async () => {
-    const tetherChainLink = await web3.eth.net.getId().then(result => result);
+    const web3 = window.web3;
     //Load Tether
+    const tetherChainLink = await web3.eth.net.getId().then(result => result);
+    setContract({ ...contract, netId: tetherChainLink });
+    if (tetherChainLink !== 5777) {
+    alert('Change network to Ganache!');
+    return;
+    };
     const tetherData = Tether.networks[tetherChainLink];
     const tether = new web3.eth.Contract(Tether.abi, tetherData.address);
     const tetherBalance = await web3.eth.getBalance(address);
@@ -48,9 +70,17 @@ const App = () => {
   };
 
   return (
-    <div>
-      <Navbar walletAddress={address} />
-    </div>
+    <UserContext.Provider value={contract}>
+      <div>
+        {contract.loading && <Loader />}
+        {!contract.loading && (
+          <>
+            <Navbar walletAddress={address} />
+            <Main />
+          </>
+        )}
+      </div>
+    </UserContext.Provider>
   );
 };
 

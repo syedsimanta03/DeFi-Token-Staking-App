@@ -44,7 +44,7 @@ const [account, setaccount] = useLocalStorage("account", "0x0");
   }, [
     account // re-render when this state changes
   ]);
-  return account
+  return account;
 }
 
 export default syncAccount
