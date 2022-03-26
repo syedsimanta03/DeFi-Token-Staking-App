@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import Web3 from "web3";
 import syncAccount from "../hooks/syncAccount";
 import Navbar from "./Navbar";
@@ -26,16 +26,23 @@ export const UserContext = React.createContext();
 const App = () => {
   const address = syncAccount();
   const networkID = window.ethereum.networkVersion;
-  const [contract, setContract] = useState({
+  const initialState = {
     netId: 0,
     tether: {},
     rwd: {},
     decentralBank: {},
-    tetherBalance: '0',
-    rwdBalance: '0',
-    stakingBalance: '0',
+    tetherBalance: "0",
+    rwdBalance: "0",
+    stakingBalance: "0",
     loading: true
-  });
+  };
+  const [contract, setContract] = useReducer(
+    (state, updates) => ({
+      ...state,
+      ...updates
+    }),
+    initialState
+  );
 
   React.useEffect(() => {
   loadWeb3()
@@ -53,9 +60,9 @@ const App = () => {
           }
           const tetherData = Tether.networks[tetherChainLink];
           const tether = new web3.eth.Contract(Tether.abi, tetherData.address);
-          let tetherBalance = await web3.eth.getBalance(address);
+          let tetherBalance = await tether.methods.balanceOf(address).call();
             tetherBalance.toString()
-          console.log(typeof tetherBalance);
+          console.log("tether", tetherBalance);
           setContract({ tether: tether, tetherBalance: tetherBalance});
           //Load RWD
           const rwdChainLink = await web3.eth.net.getId().then(result => (result));
@@ -66,8 +73,9 @@ const App = () => {
            }
           const rwdData = RWD.networks[rwdChainLink];
           const rwd = new web3.eth.Contract(RWD.abi, rwdData.address);
-          let rwdBalance = await web3.eth.getBalance(address);
+          let rwdBalance = await rwd.methods.balanceOf(address).call();
           rwdBalance.toString();
+          console.log("rwdBalance", rwdBalance);
           setContract({ rwd: rwd, rwdBalance: rwdBalance });
           //Load DecentralBank
           const decentralBankChainLink = await web3.eth.net.getId().then(result => (result));
@@ -78,7 +86,7 @@ const App = () => {
            }
           const decentralBankData = DecentralBank.networks[decentralBankChainLink];
           const decentralBank = new web3.eth.Contract(DecentralBank.abi, decentralBankData.address);
-          let decentralBankBalance = await web3.eth.getBalance(address);
+          let decentralBankBalance = await decentralBank.methods.stakingBalance(address).call();
           decentralBankBalance.toString()
           setContract({ loading: false, decentralBank: decentralBank, stakingBalance: decentralBankBalance });
         };;
