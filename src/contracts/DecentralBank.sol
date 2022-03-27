@@ -12,7 +12,7 @@ contract DecentralBank {
 
     address[] public stakers;
 
-    mapping(address => uint256) public stakingBalance;
+    mapping(address => uint) public stakingBalance;
     mapping(address => bool) public hasStaked; //false
     mapping(address => bool) public isStaking; //false
 
@@ -23,7 +23,7 @@ contract DecentralBank {
     }
 
     // staking function
-    function depositTokens(uint256 _amount) public {
+    function depositTokens(uint _amount) public {
         require(_amount > 0, "Amount can not be 0");
         // transfer tether tokens to this contract address
         tether.transferFrom(msg.sender, address(this), _amount);
@@ -41,7 +41,7 @@ contract DecentralBank {
 
     // Unstaking Tokens (withdrawal)
     function unstakeTokens() public {
-        uint256 balance = stakingBalance[msg.sender];
+        uint balance = stakingBalance[msg.sender];
         require(balance > 0, "account balance is 0 can't withdraw tokens");
 
         //withdraw tokens and send to back to investors account
@@ -57,9 +57,9 @@ contract DecentralBank {
     // Issue rewards
     function issueTokens() public {
         require(msg.sender == owner, "Caller must be ownwer");
-        for (uint256 i = 0; i < stakers.length; i++) {
+        for (uint i = 0; i < stakers.length; i++) {
             address recipient = stakers[i];
-            uint256 balance = stakingBalance[recipient] / 9;
+            uint balance = stakingBalance[recipient] / 9;
             if (balance > 0) {
                 rwd.transfer(recipient, balance);
             }
