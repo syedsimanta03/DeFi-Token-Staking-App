@@ -1,3 +1,5 @@
+![dapp](./dapp.png)
+
 # use truffle compiile 
 (compile contracts)
 
@@ -11,8 +13,6 @@
 (migrate contracts on the blockchain & reset)
 # use truffle test
 to run Moch and Chai testing suite
-
-![dapp](./dapp.png)
 
 lib:
 #mochas #chai #chai-promise
